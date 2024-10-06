@@ -1,0 +1,83 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.naveanalytics'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '21'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	repositories {
+        maven {
+            url "https://repo.osgeo.org/repository/release"
+        }
+		maven {
+			url "https://artifacts.unidata.ucar.edu/repository/unidata-all/"
+		}
+	}
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-docker-compose'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.3'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+	implementation 'software.amazon.awssdk:cognitoidentityprovider:2.24.7'
+	// CSV
+	implementation ('com.opencsv:opencsv:5.9') {
+		exclude group: 'commons-collections', module: 'commons-collections'
+	}
+	implementation 'org.apache.commons:commons-collections4:4.4'
+	//test framework hamcrest
+	testImplementation 'org.hamcrest:hamcrest:2.2'
+	testImplementation("org.testcontainers:localstack:1.19.3")
+	testImplementation 'org.testcontainers:junit-jupiter'
+
+
+
+	// netcdf dependencies
+	implementation "edu.ucar:cdm-core:5.5.3"
+	// possible not needed dependencies, depending of data in files to be read
+	runtimeOnly "edu.ucar:bufr:5.5.3"
+	runtimeOnly "edu.ucar:cdm-image:5.5.3"
+	runtimeOnly "edu.ucar:grib:5.5.3"
+	runtimeOnly "edu.ucar:netcdf4:5.5.3"
+	runtimeOnly "edu.ucar:opendap:5.5.3"
+	runtimeOnly "edu.ucar:cdm-mcidas:5.5.3"
+	implementation 'edu.ucar:cdm-s3:5.5.3'
+	testImplementation('org.skyscreamer:jsonassert:1.5.0')
+
+	implementation 'org.geotools:gt-shapefile:latest.release'
+
+
+	implementation 'software.amazon.awssdk:s3:2.17.0'
+	implementation 'com.amazonaws:aws-java-sdk-iam:1.12.110'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

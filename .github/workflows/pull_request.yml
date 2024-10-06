@@ -1,0 +1,164 @@
+name: Pull Request
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  packages: write
+  checks: write
+  pull-requests: write
+env:
+  REGISTRY: ghcr.io
+  JAVA_VERSION: 21
+  NODE_VERSION: 18
+  PYTHON_VERSION: 3.10
+
+jobs:
+  api_build:
+    defaults:
+      run:
+        working-directory: api
+    name: Build Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'zulu'
+      - name: Build with Gradle
+        run: ./gradlew build
+      - uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+
+  build_viz_docker:
+    defaults:
+      run:
+        working-directory: nave_analytics
+    name: Build Viz Backend Docker Image
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - uses: buildpacks/github-actions/setup-pack@v5.1.0
+      - name: Build python viz backend app with pack CLI
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}-viz-backend
+          VERSION: PR${{ github.event.number }}
+        run: |
+          docker build -t $IMAGE:$VERSION .
+          docker push $IMAGE:$VERSION
+
+  build_api_docker:
+    defaults:
+      run:
+        working-directory: api
+    name: Build API Docker Image
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    needs:
+      - api_build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - uses: buildpacks/github-actions/setup-pack@v5.1.0
+      - name: Build java backend api app with pack CLI
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}-api
+          VERSION: PR${{ github.event.number }}
+        run: |
+          echo "image is: $IMAGE:$VERSION"
+          pack build $IMAGE:$VERSION \
+            --builder paketobuildpacks/builder-jammy-base:0.4.276 \
+            --env BP_JVM_VERSION=${{ env.JAVA_VERSION }} \
+            --publish
+
+  web_build:
+    defaults:
+      run:
+        working-directory: web
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm test
+      - name: Publish Jest JUnit test results
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          check_annotations: false
+          report_paths: '**/junit.xml'
+      - name: Run eslint
+        if: always()
+        run: npm run lint-ci
+      - name: Annotate Code Linting Results
+        if: always()
+        uses: ataylorme/eslint-annotate-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          report-json: "**/eslint.json"
+      - name: Build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+        run: npm run build --if-present
+
+  build_web_docker:
+    defaults:
+      run:
+        working-directory: web
+    name: Build Web Docker Image
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    needs:
+      - web_build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - uses: buildpacks/github-actions/setup-pack@v5.1.0
+      - name: Build web app with pack CLI
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}-web
+          VERSION: PR${{ github.event.number }}
+        run: |
+          echo "image is: $IMAGE:$VERSION"
+          pack build $IMAGE:$VERSION \
+            --builder paketobuildpacks/builder-jammy-full:0.3.335 \
+            --buildpack paketo-buildpacks/nodejs \
+            --env BP_NODE_RUN_SCRIPTS=build \
+            --env BP_NODE_OPTIMIZE_MEMORY=true \
+            --env NODE_ENV=production \
+            --env NODE_OPTIONS=--max_old_space_size=4096 \
+            --publish

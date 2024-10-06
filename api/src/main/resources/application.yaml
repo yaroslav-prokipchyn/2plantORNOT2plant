@@ -1,0 +1,33 @@
+spring:
+
+  datasource:
+    url: ${NAVE_DB_URL:jdbc:postgresql://localhost:5432/NaveAnalytics}
+    username: ${NAVE_DB_USERNAME:postgres}
+    password: ${NAVE_DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  docker:
+    compose:
+      enabled: false
+
+springdoc:
+  swagger-ui:
+    oauth2-redirect-url: ${NAVE_URL:http://localhost:8080}/api/swagger-ui/oauth2-redirect.html
+    app-host: ${NAVE_URL:http://localhost:8080}/api
+
+server:
+  servlet:
+    contextPath: /api
+
+aws:
+  authorization-url: ${NAVE_AUTHORIZATION_URL:https://auth-dev.nave-app.com/oauth2/authorize}
+  token-url: ${NAVE_TOKEN_URL:https://auth-dev.nave-app.com/oauth2/token}
+  user-pool-id: ${NAVE_COGNITO_USER_POOL_ID:us-east-1_cnMzGNqqH}
+  client-id: ${NAVE_CLIENT_ID:6kk76sl7g89h8ts2hik73b4r0s}
+  region: ${NAVE_REGION:us-east-1}
+  environment: ${NAVE_ENVIRONMENT:local}
+  account-id: ${ACCOUNT_ID:123456789012}
+
+granuleImportRate: ${NAVE_GRANULE_IMPORT_RATE:3600000} # 1 hour
+  
+currentUserEmail: ${CURRENT_USER:nasa.harvest.challenge@vitechteam.com}

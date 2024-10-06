@@ -1,0 +1,30 @@
+.agronomists__container {
+    padding: 0 48px;
+    width: 100%
+}
+
+.agronomists__header {
+    height: 64px;
+    padding: 0 48px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.agronomists__container-header {
+    width: 100%;
+    height: 56px;
+    margin-bottom: 16px;
+    margin-top: 16px;
+}
+
+.agronomists__header button {
+    width: 160px;
+}
+
+.agronomists__container-header h2 {
+    margin-bottom: 0;
+}
+
+.agronomists__header h3 {
+    margin-bottom: 0;
+}

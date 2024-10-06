@@ -1,0 +1,12 @@
+ .analytics-page {
+    padding: 16px 24px 0 24px;
+}
+
+.analytics-page .exit-button {
+    width: 160px;
+}
+
+.analytics-page .action-bar {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}

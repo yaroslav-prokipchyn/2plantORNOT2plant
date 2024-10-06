@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    pull_policy: always
+    container_name: NaveAnalytics
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: NaveAnalytics
+    ports:
+      - "5432:5432"
+
+  app:
+    image: ghcr.io/naveanalytics-vitech/nave-app-api:latest
+    pull_policy: always
+    container_name: NaveAnalyticsBackend
+    environment:
+      NAVE_DB_URL: jdbc:postgresql://postgres:5432/NaveAnalytics
+      NAVE_DB_USERNAME: postgres
+      NAVE_DB_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres

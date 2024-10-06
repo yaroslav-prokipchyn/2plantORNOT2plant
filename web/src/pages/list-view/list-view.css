@@ -1,0 +1,424 @@
+.dashboard-container {
+    overflow: hidden;
+    padding: 16px 48px 0 48px;
+}
+
+.dashboard-header {
+    height: 56px;
+    margin-bottom: 16px;
+}
+
+.dashboard-buttons-irrigations {
+    justify-content: flex-end;
+    height: 56px;
+    margin-top: -65px;
+    margin-bottom: 16px;
+}
+
+.dashboard-search {
+    width: 42%;
+    max-width: 600px;
+}
+
+th.table-children-column {
+    font-size: 12px;
+}
+
+#agronomist-dashboard-table > * th:not(.table-children-column) {
+    padding: 16px 15px;
+}
+
+#admin-dashboard-table > * th {
+    padding: 16px 15px;
+    line-height: 22px;
+}
+
+#agronomist-dashboard-table .ant-table-cell-fix-left:not(.ant-table-cell-fix-left-last) {
+    border-inline-end: none
+}
+
+.card-parameters-table {
+    width: 100%;
+    min-height: 282px;
+
+    overflow: hidden;
+    border-bottom: none;
+    border-bottom-left-radius: 10px;
+
+}
+
+
+.card-parameters-table-row > td:nth-child(-n + 2) {
+    border-right: 1px solid #f0f0f0;
+}
+
+.agronomist-dashboard-card {
+    background-color: #FAFAFA;
+    margin-right: 5px;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    min-width: 260px;
+    height: max-content;
+}
+
+.agronomist-dashboard-card-title {
+    height: 66px;
+    column-gap: 8px;
+
+    align-items: center;
+
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    text-wrap: normal;
+    word-break: break-word;
+    font-size: 16px;
+    font-weight: 600;
+
+}
+
+.agronomist-dashboard-card-badge {
+    margin-right: 12px;
+}
+
+.agronomist-cards-wrapper {
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    grid-gap: 24px;
+    padding-bottom: 30px;
+}
+
+#card-parameters-table > * .ant-table-tbody > tr > td {
+    height: 50px;
+    padding: 0 16px
+}
+
+#card-parameters-table > * .ant-table-thead > tr > th {
+    height: 66px;
+    padding: 0 16px
+}
+
+#compare-fields-table {
+    border-radius: 0;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#compare-fields-table > * .ant-table-thead > tr > th {
+    background-color: white;
+    border-right: 1px solid transparent;
+    padding: 14px 16px;
+}
+
+#compare-fields-table > * .ant-table-tbody > tr > td {
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 16px;
+}
+
+#compare-fields-table .wide-table-column {
+    background-color: #fafafa;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+#compare-fields-table > * .ant-table-tbody > tr > td.wide-table-column {
+    background-color: #fafafa;
+    border-right: none
+}
+
+#compare-fields-table .table-column {
+    width: 270px;
+}
+
+#compare-fields-table .table-name-column {
+    width: 260px;
+}
+
+.form__filter {
+    width: 360px;
+    padding-bottom: 4px;
+}
+
+.form__filter .ant-flex {
+    margin-top: 24px;
+}
+
+.dashboard-header.inline {
+    display: inline-flex;
+}
+
+@media (width <= 1300px) {
+    .dashboard-container {
+        padding: 16px 24px 0 24px;
+        width: 100%;
+    }
+}
+
+@media (width <= 1194px) {
+    .agronomist-cards-wrapper {
+        height: calc(100vh - 64px - 72px);
+    }
+
+    .dashboard-container {
+        padding: 0 24px;
+        position: fixed
+    }
+
+    .dashboard-header {
+        height: auto;
+        padding: 16px 0;
+        margin-bottom: 0;
+    }
+
+    #compare-fields-table .table-column {
+        width: 221.5px;
+    }
+
+    #compare-fields-table .table-name-column {
+        width: 228px;
+    }
+}
+
+@media (width <= 1000px) {
+    .agronomist-cards-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (width <= 925px) {
+    .agronomist-cards-wrapper {
+        height: 75svh;
+    }
+
+    .exit-button {
+        margin: 32px 0 24px 0;
+    }
+
+    .dashboard-buttons-irrigations {
+        position: sticky;
+        height: auto;
+        top: 30px;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 24px;
+    }
+
+    #compare-fields-table .table-column {
+        width: 151px;
+    }
+
+    #compare-fields-table .table-name-column {
+        width: 196px;
+    }
+
+    .dashboard-container {
+        padding: 0 24px;
+    }
+
+    .dashboard-header {
+        flex-wrap: wrap;
+        height: auto;
+        padding-top: 80px;
+        padding-bottom: 0;
+    }
+
+    .dashboard-buttons {
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 24px;
+    }
+}
+
+.form__edit-field {
+    width: 360px;
+    padding-bottom: 4px;
+}
+
+.form__edit-field .ant-flex {
+    margin-top: 24px;
+}
+
+.exclamation-icon svg {
+    fill: #FAAD14;
+    height: 18px;
+    width: 18px;
+}
+
+.filter__button_active {
+    background-color: #0958D9;
+}
+
+.filter-popover .ant-popover-inner {
+    padding: 16px 24px 24px 24px;
+    width: 408px;
+}
+
+.filter-popover .ant-popover-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.filter-popover__buttons button {
+    width: 160px;
+}
+
+.table__right-arrow {
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.table__left-arrow {
+    border: 0 !important;
+    border-left: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.table__right-arrow button, .table__left-arrow button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100% !important;
+}
+
+.table__left-arrow button {
+    justify-content: flex-start;
+}
+
+th.table__irrigation-cell {
+    font-size: 12px;
+}
+
+.table__irrigation-cell {
+    position: relative;
+    text-align: center;
+    width: 130px;
+    height: 64px;
+    padding: 0 !important;
+}
+
+.table__irrigation-cell:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+.table__irrigation-cell-text {
+    display: block;
+    cursor: pointer;
+    width: 100%;
+    height: 64px;
+    padding: 20px 20px;
+}
+
+.table__irrigation-date-title span:last-child {
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.ant-typography-edit-content.table__irrigation-cell-text {
+    padding: 0;
+}
+
+.ant-typography-edit-content.table__irrigation-cell-text textarea {
+    z-index: 10;
+    width: 80%;
+    position: absolute;
+    top: 22px;
+    left: 25px
+}
+
+.table__irrigation-review .ant-table-ping-right .ant-table-cell-fix-right-first::after {
+    box-shadow: none;
+}
+
+.table__irrigation-review .ant-table-ping-left .ant-table-cell-fix-left-last::after {
+    box-shadow: none;
+}
+
+.table__irrigation-review .ant-table-cell-fix-right-first::after {
+    bottom: 0;
+    border-inline-end: none !important;
+}
+
+.table__irrigation-review .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > tbody > tr > td:nth-last-child(2) {
+    border-inline-end: none !important;
+}
+
+.table__irrigation-review .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > thead > tr > th:nth-last-child(3) {
+    border-inline-end: none !important;
+}
+
+.table__irrigation-review .ant-table-cell-row-hover {
+    background-color: unset !important;
+}
+
+.table__irrigation-review td.table__irrigation-cell:hover {
+    background-color: #f0f0f0 !important;
+}
+
+.dashboard-title {
+    margin: auto;
+}
+
+th.table__irrigation-cell.active {
+    border-bottom: 3px solid #1677FF !important;
+}
+
+@media (width <= 820px) {
+    .table__irrigation-review td.table__irrigation-cell:hover {
+        background-color: unset !important;
+    }
+
+    .dashboard-title {
+        font-size: 24px;
+    }
+}
+
+@media (width <= 700px) {
+    .table__irrigation-review {
+        padding-right: 16px;
+        overflow: visible;
+        width: max-content;
+        min-width: 360px;
+    }
+
+    .table__irrigation-review .ant-table-thead > tr > th {
+        padding: 10px 8px;
+    }
+
+    .table__irrigation-cell-text {
+        padding: 20px 0;
+    }
+}
+
+@media (width <= 490px) {
+
+    .filter-popover .form__filter {
+        width: 270px;
+    }
+
+    .filter-popover .ant-popover-inner {
+        width: max-content;
+    }
+
+    .filter-popover__buttons button {
+        width: 143px;
+    }
+
+}
+
+@media (height <= 435px) {
+    .table__irrigation-review .ant-table-body {
+        max-height: calc(100svh - 250px) !important;
+    }
+}
+
+@media (width <= 435px) {
+    .table__irrigation-review .ant-table-body {
+        max-height: calc(-360px + 100svh) !important;
+    }
+}
+
+@media (width <= 680px) {
+    .agronomist-cards-wrapper {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

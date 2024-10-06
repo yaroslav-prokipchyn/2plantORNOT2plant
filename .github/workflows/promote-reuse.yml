@@ -1,0 +1,62 @@
+name: Promote
+run-name: Promote ${{ inputs.environment }} api tp ${{ inputs.api_image_tag }} and web to ${{ inputs.web_image_tag }} and viz to ${{ inputs.viz_image_tag }}
+on:
+  workflow_call:
+    inputs:
+      template_name:
+        description: 'Name of Environment template to use'
+        type: string
+        required: true
+        default: 'dev'
+      environment:
+        description: 'Environment to promote to'
+        type: string
+        required: true
+      api_image_tag:
+        type: string
+        description: 'API image to promote'
+        required: true
+      web_image_tag:
+        type: string
+        description: 'Web image to promote'
+        required: true
+      viz_image_tag:
+        type: string
+        description: 'Visualisation python image to promote'
+        required: true
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  promote:
+    defaults:
+      run:
+        working-directory: infrastructure
+    name: Promote
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Run cdk deploy
+        env:
+          ENVIRONMENT_NAME: ${{ inputs.environment }}
+          TEMPLATE_NAME: ${{ inputs.template_name }}
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.GH_TOKEN }}
+          VERSION_API: ${{ inputs.api_image_tag }}
+          VERSION_WEB: ${{ inputs.web_image_tag }}
+          VERSION_VIZ: ${{ inputs.viz_image_tag }}
+        run: npx cdk deploy ${{ inputs.environment }}-stack --require-approval never

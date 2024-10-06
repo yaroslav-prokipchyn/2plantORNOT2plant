@@ -1,0 +1,250 @@
+
+.field-info-data--titles {
+    margin-right: 8px;
+    min-width: 120px;
+}
+
+.field-info-badge {
+    height: 12px;
+    width: 12px;
+    border-radius: 100%;
+}
+
+.field-info-badge--irrigation {
+    background-color: #4096FF
+}
+
+.field-info-badge--rain {
+    background-color: #9254DE
+}
+
+.field-info-badge--warning {
+    background-color: #FF4D4F
+}
+
+.field-info__row {
+    font-size: 16px !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.field-info__row h3 {
+    margin-top: 0 !important;
+}
+
+.field-info-button {
+    width: 160px;
+}
+
+.field-info-button--analitics {
+    margin-right: 8px
+}
+
+.parameters-table {
+    width: 100%;
+    min-height: 282px;
+}
+
+.form__add-irrigation {
+    width: 360px;
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+
+.form__add-irrigation .ant-flex {
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.irrigation-table-wrapper {
+    height: 300px;
+    flex-direction: column;
+}
+
+.irrigation-table {
+    width: 100%;
+}
+
+#irrigation-table > * .ant-table-tbody > tr > td {
+    padding: 11px 16px
+}
+
+#parameters-table > * .ant-table-tbody > tr > td {
+    padding: 13px 16px
+}
+
+.irrigation-table-button {
+    margin-top: 16px;
+    width: 146px;
+}
+
+.add-irrigation__chart-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.map-bottom-menu-wrapper {
+    position: absolute;
+    bottom: 0;
+    height: max-content;
+    z-index: 400;
+    width: 100%;
+    padding: 32px 24px;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.map-bottom-menu {
+    max-width: 1280px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.map-bottom-menu--main-info {
+    max-width: 616px;
+    min-width: 300px;
+}
+
+.map-bottom-menu--main-info.admin {
+    width: 616px;
+}
+
+
+.map-bottom-menu--irrigation {
+    width: 340px;
+}
+
+.map-bottom-menu--parameters {
+    width: 540px;
+}
+
+.field-categories .category-tag {
+    max-width: 616px;
+}
+
+.field-info-data--buttons-wraper {
+    margin-bottom: 32px;
+    width: 100%;
+}
+
+.custom-marker {
+    width: 22px !important;
+    height: 22px !important;
+    border-radius: 50%;
+    text-align: center;
+    border: 1px white solid;
+    color: white;
+    font-size: 14px;
+    line-height: 22px;
+
+}
+
+@media (width <= 1300px) {
+    .map-bottom-menu {
+        max-width: 925px;
+    }
+
+    .map-bottom-menu-wrapper {
+        bottom: -380px;
+    }
+
+    .map-bottom-menu--parameters {
+        order: 3;
+        width: 100%;
+        margin-top: 24px;
+        padding-bottom: 32px;
+    }
+
+    .map-bottom-menu--main-info {
+        margin-right: 10px;
+    }
+
+    .map-bottom-menu--irrigation {
+        margin-left: 10px;
+    }
+
+    .map-bottom-menu-wrapper__agronomist {
+        bottom: -420px;
+    }
+}
+
+@media (width <= 696px) {
+    .map-bottom-menu {
+        width: 100%;
+        max-width: 326px;
+    }
+
+    .map-bottom-menu--parameters {
+        order: 2;
+        width: 100%;
+        margin-top: 24px;
+        padding-bottom: 32px;
+    }
+
+    .map-bottom-menu--main-info {
+        width: 100%;
+        min-width: unset;
+        margin-right: 0;
+    }
+
+    .map-bottom-menu--irrigation {
+        margin-left: 0;
+        width: 100%;
+        order: 3;
+        padding-bottom: 32px;
+    }
+
+    .map-bottom-menu-wrapper::after {
+        content: '';
+        height: 3px;
+        width: 48px;
+        background-color: #cccccc;
+        position: absolute;
+        top: 10px;
+        border-radius: 8px;
+    }
+
+    .field-info-data--buttons-warper {
+        justify-content: space-between;
+    }
+
+    .field-info-button {
+        width: 100%;
+    }
+
+    .form__add-irrigation {
+        width: 100%;
+    }
+
+    .map-bottom-menu-wrapper {
+        bottom: -440px;
+    }
+
+    .map-bottom-menu-wrapper__agronomist {
+        bottom: -805px;
+    }
+}
+
+
+  .custom-marker {
+    width: 26px !important;
+    height: 26px !important;
+
+    border-radius: 50%;
+    text-align: center;
+
+    /* background-color: #4096FF; */
+
+    border: 1px white solid;
+    color: white;
+    font-size: 14px;
+    line-height: 26px;
+
+  }

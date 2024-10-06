@@ -1,0 +1,274 @@
+main {
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+.btn-w160 {
+    min-width: 160px;
+}
+
+.ant-modal-footer button {
+    width: 160px
+}
+
+.ant-modal-footer {
+    margin-top: 12px;
+}
+
+.ant-modal-content {
+    width: max-content;
+}
+
+.ant-form-item {
+    margin-bottom: 12px;
+}
+
+.ant-modal .ant-modal-content {
+    padding: 16px 24px 24px 24px;
+}
+
+.modal__confirm .ant-modal-content {
+    padding: 32px 32px 24px 32px;
+}
+
+.modal__confirm .ant-modal-confirm-btns {
+    margin-top: 24px
+}
+
+.modal__confirm .ant-modal-confirm-btns button {
+    width: 160px;
+}
+
+.ant-message-notice {
+    margin-top: 55px;
+}
+
+.ant-modal-confirm-body-wrapper {
+    width: 368px
+}
+
+.ant-modal-confirm-body-wrapper .ant-modal-confirm-btns {
+    margin-top: 24px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+.ant-table-thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.ant-dropdown {
+    z-index: 100000;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.large-category-tag {
+    max-width: 320px;
+    overflow: hidden;
+    display: flex;
+    align-items: baseline;
+    font-size: 16px;
+    padding: 4px 10px;
+    font-weight: 400;
+    margin-inline-end: 4px;
+}
+
+/* customize leaflet components*/
+.leaflet-touch .leaflet-bar a {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+}
+
+.liftup .leaflet-bottom {
+    bottom: 350px;
+}
+
+.leaflet-draw {
+    bottom: 4rem
+}
+
+.leaflet-touch .leaflet-bar {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-draw-toolbar a {
+    background-size: 18px 18px;
+    background-position: 11px !important;
+    background-image: url("src/assets/draw-icon.svg") !important;
+}
+
+.leaflet-control-scale {
+    box-sizing: border-box;
+}
+
+.leaflet-control-scale-line {
+    width: 100% !important;
+    color: #595959;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    line-height: 28px;
+    padding: 4px 12px;
+    background: white;
+}
+
+.leaflet-control-scale {
+    bottom: -3rem;
+}
+
+.leaflet-control-scale-line::after {
+    margin-left: 8px;
+    content: url('src/assets/scale-line.svg');
+}
+
+.leaflet-control-zoom {
+    bottom: 6rem;
+}
+
+.leaflet-bottom .leaflet-control {
+    margin-right: 48px;
+}
+
+body {
+    height: 100svh;
+}
+
+/*Tablet */
+@media screen and (max-width: 1035px) {
+
+    .leaflet-draw {
+        position: absolute;
+        right: 0;
+        bottom: 7rem;
+    }
+
+    .leaflet-control-scale {
+        position: absolute;
+        right: 0;
+        bottom: 4rem;
+    }
+
+    .leaflet-control-zoom {
+        display: none;
+    }
+
+    .leaflet-bottom .leaflet-control {
+        margin-right: 38px;
+    }
+
+    .leaflet-draw-tooltip-single {
+        visibility: hidden !important;
+    }
+}
+
+
+/*Mobile */
+@media screen and (max-height: 768px) {
+    .liftup .leaflet-bottom {
+        bottom: 0;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    .leaflet-draw {
+        position: fixed;
+        right: 0;
+        bottom: 6rem;
+    }
+
+    .leaflet-control-scale {
+        position: fixed;
+        right: 0;
+        bottom: 3rem;
+    }
+
+    .large-category-tag {
+        max-width: 250px;
+    }
+}
+
+@media screen and (max-width: 925px) {
+    .leaflet-draw {
+        bottom: 6rem;
+    }
+
+    .leaflet-control-scale {
+        bottom: 3rem;
+    }
+
+    .leaflet-bottom .leaflet-control {
+        margin-right: 24px;
+    }
+
+    .large-category-tag {
+        max-width: 250px;
+    }
+
+    .ant-space {
+        display: flex;
+    }
+
+    .leaflet-container {
+        z-index: 0;
+    }
+
+    .ant-layout-content {
+        display: flex;
+        justify-content: center;
+    }
+
+    .ant-card-type-inner .ant-card-body {
+        padding: 0 0;
+    }
+
+    .ant-modal-footer button {
+        width: 142px
+    }
+
+    .modal__confirm .ant-modal-content {
+        width: 100%;
+        padding: 32px 24px 24px 24px;
+    }
+
+    .modal__confirm .ant-modal-confirm-btns {
+        margin-top: 24px
+    }
+
+    .modal__confirm .ant-modal-confirm-btns button {
+        width: 142px;
+    }
+
+    .modal__confirm .ant-modal-confirm-body-wrapper {
+        width: 100%
+    }
+}
+
+/*customize scrollbar*/
+::-webkit-scrollbar {
+    background-color: #f1f1f1;
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #babac0;
+    border-radius: 4px;
+    border: 1px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}

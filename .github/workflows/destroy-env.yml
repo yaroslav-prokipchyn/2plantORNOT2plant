@@ -1,0 +1,62 @@
+name: Destroy environment
+run-name: Destroy ${{ inputs.environment }} api ${{ inputs.api_image_tag }} and web ${{ inputs.web_image_tag }}
+on:
+  workflow_dispatch:
+    inputs:
+      template_name:
+        description: 'Name of Environment template that was used for env.'
+        type: choice
+        options:
+          - dev
+        required: true
+        default: 'dev'
+      environment:
+        default: preview
+        description: 'Environment name to destroy'
+        required: true
+      api_image_tag:
+        description: 'API image that is on env'
+        required: true
+      web_image_tag:
+        description: 'Web image that is on env'
+        required: true
+      viz_image_tag:
+        description: 'Visualisation python image that is on env'
+        required: true
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  promote:
+    defaults:
+      run:
+        working-directory: infrastructure
+    name: Promote
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Run cdk deploy
+        env:
+          ENVIRONMENT_NAME: ${{ inputs.environment }}
+          TEMPLATE_NAME: ${{ inputs.template_name }}
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.GH_TOKEN }}
+          VERSION_API: ${{ inputs.api_image_tag }}
+          VERSION_WEB: ${{ inputs.web_image_tag }}
+          VERSION_VIZ: ${{ inputs.viz_image_tag }}
+        run: npx cdk destroy ${{ inputs.environment }}-stack --force

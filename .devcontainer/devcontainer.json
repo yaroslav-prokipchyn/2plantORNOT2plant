@@ -1,0 +1,51 @@
+{
+  "name": "nave-analytics-python",
+  "build": {
+    "dockerfile": "../nave_analytics/Dockerfile",
+    "context": "../nave_analytics",
+    "args": {
+      "USER": "${localEnv:USER}"
+    }
+  },
+  "containerUser": "1000",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "ms-python.black-formatter",
+        "ms-python.isort",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker"
+      ],      
+      "settings": {
+        "python.pythonPath": "/usr/local/bin/python",
+        "python.languageServer": "Pylance",
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        // pytest
+        "python.testing.pytestArgs": ["nave_analytics"],
+        "python.testing.pytestEnabled": true
+      }
+    }
+  },
+  "mounts": [
+    "source=projectname-bashhistory,target=/commandhistory,type=volume",
+    "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind,consistency=cached,readonly",
+    "source=${localEnv:HOME}/.aws,target=/home/${localEnv:USER}/.aws,type=bind,consistency=cached,readonly",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=bind,consistency=cached,readonly"
+  ],
+  "containerEnv": {
+    "AWS_PROFILE": "nave"
+  },
+  "workspaceFolder": "/code",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/code,type=bind,consistency=cached",
+  "runArgs": ["--ipc=host"],
+  "postCreateCommand": "pip install -e ./nave_analytics[dev]"
+}

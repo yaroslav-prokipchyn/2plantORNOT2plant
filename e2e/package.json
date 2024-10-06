@@ -1,0 +1,64 @@
+{
+  "name": "serenity-js-playwright-test-template",
+  "version": "3.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "serenity-bdd update",
+    "clean": "rimraf playwright-report target",
+    "test": "failsafe clean test:execute test:report",
+    "test:execute": "playwright test",
+    "test:report": "serenity-bdd run",
+    "start": "mkdirp target/site/serenity && npx http-server -p 8080 target/site/serenity -s -o",
+    "lint": "eslint --ext ts --config .eslintrc.js .",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serenity-js/serenity-js-playwright-test-template.git"
+  },
+  "keywords": [
+    "serenity-js",
+    "bdd",
+    "playwright",
+    "playwright-test",
+    "testing"
+  ],
+  "author": "Jan Molak <jan.molak@smartcodeltd.co.uk>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/serenity-js/serenity-js/issues"
+  },
+  "homepage": "https://serenity-js.org",
+  "engines": {
+    "node": "^16.13 || ^18.12 || ^20"
+  },
+  "dependencies": {
+    "@playwright/test": "1.44.0",
+    "@serenity-js/assertions": "^3.23.0",
+    "@serenity-js/console-reporter": "^3.23.0",
+    "@serenity-js/core": "^3.23.0",
+    "@serenity-js/playwright": "^3.23.0",
+    "@serenity-js/playwright-test": "^3.23.0",
+    "@serenity-js/rest": "^3.23.0",
+    "@serenity-js/serenity-bdd": "^3.23.0",
+    "@serenity-js/web": "^3.23.0",
+    "moment": "^2.30.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/node": "^18.19.24",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "eslint-plugin-unicorn": "^51.0.1",
+    "eslint-plugin-unused-imports": "^3.1.0",
+    "http-server": "^14.1.1",
+    "mkdirp": "^3.0.1",
+    "npm-failsafe": "^1.2.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.4.2"
+  }
+}

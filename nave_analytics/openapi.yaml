@@ -1,0 +1,1274 @@
+openapi: 3.0.0
+info:
+  title: Irrigation Analytics API
+  description: API for accessing irrigation related data including weather, water risks, soil moisture, and crop water use.
+  version: 1.0.0
+servers:
+  - url: https://nave-app.com/data/v1
+
+paths:
+  # Crop Water Use
+  /et/{org_id}/{field_id}:
+    get:
+      summary: Get ET data
+      description: Retrieve Evapotranspiration (ET) data for a specific org and field.
+      tags:
+        - "Crop Water Use"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with ET data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "et"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ETData'
+        '404':
+          description: Data not found
+  
+  /et-maps/{org_id}/{field_id}:
+    get:
+      summary: Get ET maps data
+      description: Retrieve ET maps data for a specific org and field.
+      tags:
+        - "Crop Water Use"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with ET maps data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "et-maps"
+                  data:
+                    $ref: "#/components/schemas/ETMapsData"
+        '404':
+          description: Data not found
+
+  /forecast-et-maps/{org_id}/{field_id}:
+    get:
+      summary: Get forecast ET maps data
+      description: Retrieve forecast ET maps data for a specific org and field.
+      tags:
+        - "Crop Water Use"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with ET maps data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "forecast-et-maps"
+                  data:
+                    $ref: "#/components/schemas/ForecastETMapsData"
+        '404':
+          description: Data not found
+  
+  # Field Health
+  /lai-maps/{org_id}/{field_id}:
+    get:
+      summary: Get LAI maps data
+      description: Retrieve Leaf Area Index (LAI) maps data for a specific org and field.
+      tags:
+        - "Field Health"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with LAI maps data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "lai-maps"
+                  data:
+                    $ref: "#/components/schemas/LaiMapsData"
+        '404':
+          description: Data not found
+  
+  /lai-quantiles/{org_id}/{field_id}:
+    get:
+      summary: Get 3 LAI quantiles data
+      description: Retrieve 3 Leaf Area Index (LAI) quantiles data for a specific org and field, capturing best, average and worst.
+      tags:
+        - "Field Health"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with LAI quantiles data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "lai-quantiles"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LaiQuantilesData'
+        '404':
+          description: Data not found
+  
+  # Soil Moisture
+  /water-available-surface/{org_id}/{field_id}:
+    get:
+      summary: Get water available surface data
+      description: Retrieve water available surface data for a specific org and field.
+      tags:
+        - "Soil Moisture"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with water available surface data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "water-available-surface"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WaterAvailableSurfaceData'
+        '404':
+          description: Data not found
+
+  /water-content-probe/{org_id}/{field_id}:
+    get:
+      summary: Get water content probe data
+      description: Retrieve water content probe data for a specific org and field.
+      tags:
+        - "Soil Moisture"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with water content probe data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "water-content-probe"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WaterContentProbeData'
+        '404':
+          description: Data not found
+
+  /water-risk-zones/{org_id}/{field_id}:
+    get:
+      summary: Get soil moisture data
+      description: Retrieve soil moisture data for a specific org and field.
+      tags:
+        - "Soil Moisture"      
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with soil moisture data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "water-risk-zones"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WaterRiskZonesData'
+        '404':
+          description: Data not found
+  
+  # Water Risks
+  /leaching-risk-maps/{org_id}/{field_id}:
+    get:
+      summary: Get leaching risk maps data
+      description: Retrieve leaching risk maps data for a specific org and field.
+      tags:
+        - "Water Risks"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with leaching risk maps data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "leaching-risk-maps"
+                  data:
+                    $ref: "#/components/schemas/LeachingRiskMapsData"
+        '404':
+          description: Data not found
+
+  /water-risks/{org_id}/{field_id}:
+    get:
+      summary: Get water risks data
+      description: Retrieve water risks data for a specific org and field.
+      tags:
+        - "Water Risks"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with water risks data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "water-risks"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WaterRisksData'
+        '404':
+          description: Data not found
+  
+  /water-shortage-maps/{org_id}/{field_id}:
+    get:
+      summary: Get water shortage maps data
+      description: Retrieve water shortage maps data for a specific org and field.
+      tags:
+        - "Water Risks"
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with water shortage maps data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "water-shortage-maps"
+                  data:
+                    $ref: "#/components/schemas/WaterShortageMapsData"
+        '404':
+          description: Data not found
+
+  # Weather
+  /humidity/{org_id}/{field_id}:
+    get:
+      summary: Get humidity data
+      description: Retrieve humidity data for a specific org and field.
+      tags:
+        - Weather
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with humidity data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "humidity"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HumidityData'
+        '404':
+          description: Data not found
+
+  /precipitation/{org_id}/{field_id}:
+    get:
+      summary: Get precipitation and irrigation data
+      description: Retrieve precipitation and irrigation data for a specific org and field.
+      tags:
+        - Weather      
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with precipitation data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "precipitation"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PrecipitationData'
+        '404':
+          description: Data not found
+
+  /reference-et/{org_id}/{field_id}:
+    get:
+      summary: Get reference ET data
+      description: Retrieve reference ET data for a specific org and field.
+      tags:
+        - Weather      
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with reference ET data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "reference-et"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReferenceETData'
+        '404':
+          description: Data not found
+
+  /solar-radiation/{org_id}/{field_id}:
+    get:
+      summary: Get solar radiation data
+      description: Retrieve solar radiation data for a specific org and field.
+      tags:
+        - Weather      
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with solar radiation data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "solar-radiation"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SolarRadiationData'
+        '404':
+          description: Data not found
+
+  /temperature/{org_id}/{field_id}:
+    get:
+      summary: Get temperature data
+      description: Retrieve temperature data for a specific org and field.
+      tags:
+        - Weather      
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with temperature data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "temperature"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TemperatureData'
+        '404':
+          description: Data not found
+
+  /wind-speed/{org_id}/{field_id}:
+    get:
+      summary: Get wind speed data
+      description: Retrieve wind speed data for a specific org and field.
+      tags:
+        - Weather
+      parameters:
+        - in: path
+          name: org_id
+          required: true
+          schema:
+            type: string
+          description: The org identifier
+        - in: path
+          name: field_id
+          required: true
+          schema:
+            type: string
+          description: The field identifier
+      responses:
+        '200':
+          description: Successful response with wind speed data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Widget name
+                    example: "wind-speed"
+                  forecast_date:
+                    type: string
+                    format: date-time
+                    description: Forecast date
+                    example: "2024-05-14T00:00:00"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WindSpeedData'
+        '404':
+          description: Data not found
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    # Crop Water Use
+    ETData:
+      type: object
+      properties:
+        et_estimate:
+          type: number
+          format: float
+          description: ET estimate
+          example: 4.9
+        et_under:
+          type: number
+          format: float
+          description: ET lower bound
+          example: 4.1
+        et_over:
+          type: number
+          format: float
+          description: ET upper bound
+          example: 5.7
+        time:
+          type: string
+          format: date-time
+          example: "2024-05-14T00:00:00"
+
+    ETMapsData:
+      type: object
+      properties:
+        aoi_lat:
+          type: array
+          description: Area of interest latitude coordinates
+          items:
+            type: number
+            format: float
+            example: -17.5
+        aoi_lon:
+          type: array
+          description: Area of interest longitude coordinates
+          items:
+            type: number
+            format: float
+            example: -48.8
+        past_3day:
+          type: array
+          description: 3-day ET map
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 6.2
+        past_7day:
+          type: array
+          description: 7-day ET map
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 15.6
+        lon:
+          type: array
+          description: Longitude coordinates
+          items:
+            type: number
+            format: float
+            example: -48.8
+        lat:
+          type: array
+          description: Latitude coordinates
+          items:
+            type: number
+            format: float
+            example: -17.5
+
+    ForecastETMapsData:
+      type: object
+      properties:
+        aoi_lat:
+          type: array
+          description: Area of interest latitude coordinates
+          items:
+            type: number
+            format: float
+            example: -17.5
+        aoi_lon:
+          type: array
+          description: Area of interest longitude coordinates
+          items:
+            type: number
+            format: float
+            example: -48.8
+        future_3day:
+          type: array
+          description: 3-day forecast ET map
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 6.2
+        future_7day:
+          type: array
+          description: 7-day forecast ET map
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 15.6
+        lon:
+          type: array
+          description: Longitude coordinates
+          items:
+            type: number
+            format: float
+            example: -48.8
+        lat:
+          type: array
+          description: Latitude coordinates
+          items:
+            type: number
+            format: float
+            example: -17.5
+    
+    # Field Health
+    LaiMapsData:
+      type: object
+      properties:
+        aoi_lat:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -17.5
+        aoi_lon:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -48.8
+        past_14days:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 15.6
+        past_7days:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 6.2
+        today:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 15.6
+        lon:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -48.8
+        lat:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -17.5
+    
+    LaiQuantilesData:
+      type: object
+      properties:
+        lai_masked_a:
+          type: number
+          format: float
+          example: 3.7
+          description: Average LAI quantile
+        lai_masked_b:
+          type: number
+          format: float
+          example: 3.8
+          description: Best LAI quantile
+        lai_masked_w:
+          type: number
+          format: float
+          example: 3.5
+          description: Worst LAI quantile
+        time:
+          type: string
+          format: date-time
+          example: "2024-05-14T00:00:00"
+
+
+    # Soil Moisture
+    WaterAvailableSurfaceData:
+      type: object
+      properties:
+        past_1day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 278.2
+        past_7day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 285.2
+        future_7day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 265.2
+        lon:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -48.7
+        lat:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -17.4
+
+    WaterContentProbeData:
+      type: object
+      properties:
+        wp:
+          type: number
+          format: float
+          description: Wilting point
+          example: 231.5
+        fhc:
+          type: number
+          format: float
+          description: Field holding capacity
+          example: 401.7
+        swc_005cm:
+          type: number
+          format: float
+          description: Soil water content at 5cm depth
+          example: 62.8
+        swc_015cm:
+          type: number
+          format: float
+          description: Soil water content at 15cm depth
+          example: 274.6
+        swc_030cm:
+          type: number
+          format: float
+          description: Soil water content at 30cm depth
+          example: 303.9
+        swc_060cm:
+          type: number
+          format: float
+          description: Soil water content at 60cm depth
+          example: 340.1
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the data
+          example: "2024-05-14T00:00:00"
+
+    WaterRiskZonesData:
+      type: object
+      properties:
+        wp:
+          type: number
+          format: float
+          description: Wilting point
+          example: 231.5
+        rtsml_b:
+          type: number
+          format: float
+          description: Root zone soil moisture lower threshold
+          example: 317.6
+        rtsml_t:
+          type: number
+          format: float
+          description: Root zone soil moisture upper threshold
+          example: 373.6
+        fhc:
+          type: number
+          format: float
+          description: Field holding capacity
+          example: 401.7
+        swc_est:
+          type: number
+          format: float
+          description: Estimated soil water content
+          example: 339.1
+        swc_sig_under:
+          type: number
+          format: float
+          description: Soil water content lower bound
+          example: 308.6
+        swc_sig_over:
+          type: number
+          format: float
+          description: Soil water content upper bound
+          example: 369.3
+        to_3day_target:
+          type: number
+          format: float
+          example: 34.6
+        to_7day_target:
+          type: number
+          format: float
+          example: 45.2
+        to_full_profile:
+          type: number
+          format: float
+          example: 62.7
+        time:
+          type: string
+          format: date-time
+          example: "2024-05-14T00:00:00"
+
+    # Water Risks
+    LeachingRiskMapsData:
+      type: object
+      properties:
+        aoi_lat:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -17.5
+        aoi_lon:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -48.8
+        past_7day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 15.6
+        past_1day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 6.2
+        future_7day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 15.6
+        lon:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -48.8
+        lat:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -17.5
+
+    WaterRisksData:
+      type: object
+      properties:
+        water_risk:
+          type: number
+          format: float
+          description: Water risk percentage
+          example: 2.1
+        leach_risk:
+          type: number
+          format: float
+          description: Leach risk percentage
+          example: 15.9
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the data
+          example: "2024-05-14T00:00:00"
+  
+    WaterShortageMapsData:
+      type: object
+      properties:
+        aoi_lat:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -17.5
+        aoi_lon:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -48.8
+        past_7day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 15.6
+        past_1day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 6.2
+        future_7day:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+              example: 15.6
+        lon:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -48.8
+        lat:
+          type: array
+          items:
+            type: number
+            format: float
+            example: -17.5
+
+    # Weather
+    HumidityData:
+      type: object
+      properties:
+        max_humidity:
+          type: number
+          format: float
+          description: Maximum humidity percentage
+          example: 54.1
+        min_humidity:
+          type: number
+          format: float
+          description: Minimum humidity percentage
+          example: 29.2
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the data
+          example: "2024-05-14T00:00:00"
+
+    PrecipitationData:
+      type: object
+      properties:
+        precipitation:
+          type: number
+          format: float
+          description: Precipitation amount in mm
+          example: 6.1
+        irrigation:
+          type: number
+          format: float
+          description: Irrigation amount in mm
+          example: 0.5
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the data
+          example: "2024-05-14T00:00:00"
+
+    ReferenceETData:
+      type: object
+      properties:
+        reference_et:
+          type: number
+          format: float
+          description: Reference ET in mm per day
+          example: 5.2
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the data
+          example: "2024-05-14T00:00:00"
+
+    SolarRadiationData:
+      type: object
+      properties:
+        solar_radiation:
+          type: number
+          format: float
+          description: Solar radiation in MJ per day
+          example: 24.3
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the data
+          example: "2024-05-14T00:00:00"
+
+    TemperatureData:
+      type: object
+      properties:
+        max_temperature:
+          type: number
+          format: float
+          description: Maximum temperature in Celsius
+          example: 31.1
+        min_temperature:
+          type: number
+          format: float
+          description: Minimum temperature in Celsius
+          example: 20.4
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the data
+          example: "2024-05-14T00:00:00"
+
+    WindSpeedData:
+      type: object
+      properties:
+        max_wind_speed:
+          type: number
+          format: float
+          description: Maximum wind speed in m/s
+          example: 3.2
+        min_wind_speed:
+          type: number
+          format: float
+          description: Minimum wind speed in m/s
+          example: 2.2
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the data
+          example: "2024-05-14T00:00:00"          
+
+security:
+  - BearerAuth: []

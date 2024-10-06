@@ -1,0 +1,131 @@
+.map-container {
+    position: relative;
+    background-color: #fff;
+    height: calc(100vh - 64px);
+}
+
+.map-container .leaflet-container {
+    height: 100%;
+    width: 100%;
+}
+
+.form__field-details {
+    width: 360px;
+    padding-bottom: 4px;
+}
+
+.form__field-details .ant-flex {
+    margin-top: 24px;
+}
+
+.steps__add-field {
+    margin-bottom: 16px;
+    width: 270px
+}
+
+.popup__field-info {
+    font-size: 14px;
+    width: 265px;
+    padding: 12px !important;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px !important;
+}
+
+.popup__field-info .field-name, .popup__field-info .field-status-badge {
+    margin-bottom: 8px;
+}
+
+.map-container__search {
+    height: 40px;
+    width: 423px;
+}
+
+.map-container__search-wrapper {
+    z-index: 100000;
+    position: absolute;
+    top: 48px;
+    right: 48px;
+}
+
+#map-container-search-wrapper > * .ant-select-selector {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+    border-color: #d9d9d9;
+}
+
+#map-container-search-button {
+    border-radius: 4px;
+}
+
+#map-container-search-button-active {
+    border-radius: 0 6px 6px 0;
+}
+
+
+/*Tablet */
+@media screen and (max-width: 1025px) {
+    .map-container__search-wrapper {
+        right: 38px;
+    }
+}
+
+.overflow-scroll {
+    overflow-y: scroll;
+}
+
+.category__color-indicator {
+    display: block;
+    border-radius: 100%;
+    height: 8px;
+    width: 8px;
+    margin-top: 3px
+}
+
+/*Mobile */
+@media screen and (max-width: 925px) {
+    .form__field-details {
+        width: 292px;
+    }
+
+    .map-container__search-wrapper {
+        position: fixed;
+        right: 24px;
+        top: 24px;
+    }
+
+    .map-container__search {
+        width: calc(100vw - 88px)
+    }
+    .map-container {
+        height: 100vh;
+    }
+}
+
+/*fields files  upload dialog*/
+.files-upload-dialog .ant-modal-content {
+    width: 100%;
+}
+
+.files-upload-dialog .ant-upload-list-item-name {
+    color: #4096FF;
+}
+
+.files-upload-dialog .ant-upload-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.files-upload-dialog .ant-upload-select {
+    order: 2; /* This makes Div 1 appear after Div 2 in the flex container */
+}
+
+.files-upload-dialog .ant-upload-list-text {
+    order: 1; /* This makes Div 2 appear before Div 1 in the flex container */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/*fields files  upload dialog*/

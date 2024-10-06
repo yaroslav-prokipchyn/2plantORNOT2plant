@@ -1,0 +1,20 @@
+.profile-dropdown {
+    background-color: white;
+    margin-top: 8px;
+    border-radius: 6px;
+    box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+
+.profile-dropdown__content {
+    padding: 16px;
+    flex-direction: column;
+    width: 205px
+}
+
+#unit-switch >.ant-radio-button-wrapper {
+    width: 50%;
+}
+
+.profile-dropdown__button-active {
+    background-color: rgba(0, 0, 0, 0.06)
+}

@@ -1,0 +1,250 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions:
+  contents: write
+  packages: write
+  checks: write
+  pull-requests: write
+  id-token: write
+env:
+  REGISTRY: ghcr.io
+  JAVA_VERSION: 21
+  NODE_VERSION: 18
+  PYTHON_VERSION: 3.10
+
+jobs:
+  api_build:
+    defaults:
+      run:
+        working-directory: api
+    name: Build Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'zulu'
+      - name: Build with Gradle
+        run: ./gradlew build
+      - uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+
+  build_viz_docker:
+    defaults:
+      run:
+        working-directory: nave_analytics
+    name: Build Viz Backend Docker Image
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    needs:
+      - version_bump
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - uses: buildpacks/github-actions/setup-pack@v5.1.0
+      - name: Build python viz backend app with pack CLI
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}-viz-backend
+          VERSION: ${{ needs.version_bump.outputs.newVersion }}
+        run: |
+          docker build -t $IMAGE:$VERSION .
+          docker push $IMAGE:$VERSION
+
+  build_api_docker:
+    defaults:
+      run:
+        working-directory: api
+    name: Build API Docker Image
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    needs:
+      - version_bump
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - uses: buildpacks/github-actions/setup-pack@v5.1.0
+      - name: Build java backend api app with pack CLI
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}-api
+          VERSION: ${{ needs.version_bump.outputs.newVersion }}
+        run: |
+          echo "image is: $IMAGE:$VERSION"
+          pack build $IMAGE:$VERSION \
+            --builder paketobuildpacks/builder-jammy-base:0.4.276 \
+            --env BP_JVM_VERSION=${{ env.JAVA_VERSION }} \
+            --publish \
+            --tag $IMAGE:latest
+
+  e2e_run:
+    defaults:
+      run:
+        working-directory: e2e
+    name: Run e2e tests
+    runs-on: ubuntu-latest
+    needs:
+      - promote_dev
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Node Modules
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        env:
+          environment: dev
+        run: npm test
+      - run: ls
+      - run: find target
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: e2e/playwright-report
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: serenity-report
+          path: e2e/target/site/serenity
+          retention-days: 30
+
+  web_build:
+    defaults:
+      run:
+        working-directory: web
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm test
+      - name: Publish Jest JUnit test results
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          check_annotations: false
+          report_paths: '**/junit.xml'
+      - name: Run eslint
+        if: always()
+        run: npm run lint-ci
+      - name: Annotate Code Linting Results
+        if: always()
+        uses: ataylorme/eslint-annotate-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          report-json: "**/eslint.json"
+      - name: Build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+        run: npm run build --if-present
+
+  build_web_docker:
+    defaults:
+      run:
+        working-directory: web
+    name: Build Web Docker Image
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    needs:
+      - version_bump
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - uses: buildpacks/github-actions/setup-pack@v5.1.0
+      - name: Build web app with pack CLI
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}-web
+          VERSION: ${{ needs.version_bump.outputs.newVersion }}
+        run: |
+          echo "image is: $IMAGE:$VERSION"
+          pack build $IMAGE:$VERSION \
+            --builder paketobuildpacks/builder-jammy-full:0.3.335 \
+            --buildpack paketo-buildpacks/nodejs \
+            --env BP_NODE_RUN_SCRIPTS=build \
+            --env BP_NODE_OPTIMIZE_MEMORY=true \
+            --env NODE_ENV=production \
+            --env NODE_OPTIONS=--max_old_space_size=4096 \
+            --tag $IMAGE:latest \
+            --publish
+
+  version_bump:
+    name: Bump Version
+    runs-on: ubuntu-latest
+    needs:
+      - web_build
+      - api_build
+    outputs:
+      newVersion: ${{ steps.tag_version.outputs.new_version }}
+      newVersionTag: ${{ steps.tag_version.outputs.new_tag }}
+      changelog: ${{ steps.tag_version.outputs.changelog }}
+    steps:
+      - name: Bump Version and Push Tags
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  promote_dev:
+    needs:
+      - build_web_docker
+      - build_api_docker
+      - build_viz_docker
+      - version_bump
+    name: Promote to last version
+    secrets: inherit
+    uses: ./.github/workflows/promote-reuse.yml
+    with:
+      environment: dev
+      api_image_tag: ${{ needs.version_bump.outputs.newVersion }}
+      web_image_tag: ${{ needs.version_bump.outputs.newVersion }}
+      viz_image_tag: ${{ needs.version_bump.outputs.newVersion }}
+      template_name: dev

@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AnalyticsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ACTIVE_PROFILES" value="dockerdb,dev" />
+    <envs>
+      <env name="AWS_PROFILE" value="nave-val" />
+      <env name="AWS_REGION" value="us-east-1" />
+    </envs>
+    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <module name="api.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.naveanalytics.AnalyticsApplication" />
+    <option name="WORKING_DIRECTORY" value="file://$ProjectFileDir$/api" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

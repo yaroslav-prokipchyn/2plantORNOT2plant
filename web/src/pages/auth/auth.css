@@ -1,0 +1,7 @@
+.amplify-button--primary {
+    background: #1677ff;
+  }
+
+[data-amplify-authenticator] {
+    height: 100svh;
+  }

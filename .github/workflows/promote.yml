@@ -1,0 +1,43 @@
+name: Manual Promote
+run-name: Promote ${{ inputs.environment }} api to ${{ inputs.api_image_tag }} and web to ${{ inputs.web_image_tag }} and viz to ${{ inputs.viz_image_tag }}
+on:
+  workflow_dispatch:
+    inputs:
+      template_name:
+        description: 'Name of Environment template to use'
+        type: choice
+        options:
+          - dev
+          - preview
+          - prod
+        required: true
+        default: 'dev'
+      environment:
+        default: preview
+        description: 'Environment name to promote to'
+        required: true
+      api_image_tag:
+        description: 'API image to promote'
+        required: true
+      web_image_tag:
+        description: 'Web image to promote'
+        required: true
+      viz_image_tag:
+        description: 'Visualisation python image to promote'
+        required: true
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  promote:
+    secrets: inherit
+    name: Manual Promote
+    uses: ./.github/workflows/promote-reuse.yml
+    with:
+      environment: ${{ inputs.environment }}
+      api_image_tag: ${{ inputs.api_image_tag }}
+      web_image_tag: ${{ inputs.web_image_tag }}
+      template_name: ${{ inputs.template_name }}
+      viz_image_tag: ${{ inputs.viz_image_tag }}
